@@ -4,8 +4,12 @@
   "description": "An API that serves the latest scores of fixtures of matches in a “Mock Premier League",
   "main": "index.js",
   "scripts": {
-    "dev-start": "nodemon --exec babel-node ./index.js --env",
-    "test": "jest"
+    "dev": "nodemon --exec babel-node ./index.js --env",
+    "build": "rimraf build/* && babel ./ -d build --ignore 'node_modules','coverage' ",
+    "start": "node build/index.js",
+    "test": "jest --detectOpenHandles --forceExit -u --coverage ",
+    "test:watch": "jest -u --coverage --watch",
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
@@ -44,6 +48,34 @@
     "eslint-plugin-import": "^2.18.2",
     "jest": "^24.9.0",
     "nodemon": "^1.19.3",
+    "nyc": "^15.0.0",
     "prettier-eslint-cli": "^5.0.0"
+  },
+  "nyc": {
+    "require": [
+      "@babel/register"
+    ],
+    "reporter": [
+      "lcov",
+      "text",
+      "html"
+    ],
+    "exclude": [
+      "**/*.spec.js",
+      "/server/test/*.js`"
+    ]
+  },
+  "jest": {
+    "clearMocks": true,
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,mjs}",
+      "!<rootDir>/node_modules/"
+    ],
+    "coverageDirectory": "coverage",
+    "moduleFileExtensions": [
+      "js",
+      "json"
+    ],
+    "verbose": false
   }
 }
