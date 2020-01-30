@@ -3,10 +3,12 @@ import { Router } from 'express';
 import authController from '../controllers/authController';
 import userController from '../controllers/userController';
 import teamController from '../controllers/teamController';
+import fixtureController from '../controllers/fixtureController';
 
 import { signUpSchema, logInSchema } from '../middlewares/validations/authValidations';
 import handleValidationErrors from '../middlewares/validations/handleValidationErrors';
 import teamSchema from '../middlewares/validations/teamValidations';
+import fixtureSchema from '../middlewares/validations/fixtureValidations';
 
 import accessMiddleware from '../middlewares/accessMiddleware';
 
@@ -43,5 +45,36 @@ route.put(
 );
 route.delete('/team/:id', accessMiddleware.authoriseUser, accessMiddleware.adminAccess, teamController.deleteTeam);
 
+
+route.post(
+  '/fixture',
+  accessMiddleware.authoriseUser,
+  accessMiddleware.adminAccess,
+  fixtureSchema,
+  handleValidationErrors,
+  fixtureController.createFixture,
+);
+route.get('/fixtures', accessMiddleware.authoriseUser, fixtureController.readFixtures);
+route.get('/fixture/:id', accessMiddleware.authoriseUser, fixtureController.readFixture);
+route.put(
+  '/fixture/:id',
+  accessMiddleware.authoriseUser,
+  accessMiddleware.adminAccess,
+  fixtureSchema,
+  handleValidationErrors,
+  fixtureController.updateFixture,
+);
+route.delete(
+  '/fixture/:id',
+  accessMiddleware.authoriseUser,
+  accessMiddleware.adminAccess,
+  fixtureController.deleteFixture,
+);
+route.put(
+  '/fixture/complete/:id',
+  accessMiddleware.authoriseUser,
+  accessMiddleware.adminAccess,
+  fixtureController.toggleFixtureStatus,
+);
 
 export default route;
