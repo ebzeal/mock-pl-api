@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS
         id SERIAL PRIMARY KEY,
         playerName VARCHAR(128),
         playerPosition VARCHAR(128),
-        playerNumber INTEGER,
+        playerNumber VARCHAR(128),
         team_id INTEGER REFERENCES teams(id) ON DELETE CASCADE,
         uniqueId UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
         dateCreated DATE NOT NULL DEFAULT CURRENT_DATE,

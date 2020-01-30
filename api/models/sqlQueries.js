@@ -32,11 +32,19 @@ const createFixture = 'INSERT INTO fixtures(homeTeam, awayTeam, matchDate, seaso
 const updateFixture = 'UPDATE fixtures SET homeTeam=$1, awayTeam=$2, matchDate=$3, season=$4, location=$5, status=$6, link=$7 WHERE id=$8';
 const deleteFixture = 'DELETE FROM fixtures WHERE id=$1';
 const updateFixtureStatus = 'UPDATE fixtures SET status=$2 WHERE id=$1';
+const getFixturesByStatus = 'SELECT * FROM fixtures WHERE status=$1';
 
 
 const addMatchOfficials = 'INSERT INTO matchOfficials(name,role,fixture)VALUES($1, $2, $3)';
 const getMatchOfficials = 'SELECT name, role FROM  matchOfficials WHERE fixture=$1';
 const updateMatchOfficials = 'INSERT INTO players(name, role, uniqueId)VALUES($1, $2, $3) ON CONFLICT(uniqueId) DO UPDATE SET name=$1, role=$2';
+
+
+const getSearchTeam = "SELECT name, location, coach FROM teams WHERE name ILIKE '%' || $1 || '%' OR location ILIKE '%' || $1 || '%' OR coach ILIKE '%' || $1 || '%'";
+const getSearchPlayers = "SELECT playerName, playerPosition, playerNumber FROM players WHERE playerName ILIKE '%' || $1 || '%' OR playerPosition ILIKE '%' || $1 || '%' OR playerNumber ILIKE '%' || $1 || '%'";
+
+const getSearchFixtures = "SELECT homeTeam, awayTeam, matchDate, season, location, status FROM fixtures WHERE season ILIKE '%' || $1 || '%' OR location ILIKE '%' || $1 || '%' OR status ILIKE '%' || $1 || '%'";
+const getSearchOfficials = "SELECT name, role FROM matchOfficials WHERE name ILIKE '%' || $1 || '%' OR role ILIKE '%' || $1 || '%'";
 
 
 export {
@@ -71,4 +79,9 @@ export {
     updateMatchOfficials,
     deleteFixture,
     updateFixtureStatus,
+    getFixturesByStatus,
+    getSearchTeam,
+    getSearchPlayers,
+    getSearchFixtures,
+    getSearchOfficials,
 };

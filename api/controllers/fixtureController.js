@@ -14,7 +14,8 @@ import {
   updateFixture,
   updateMatchOfficials,
   deleteFixture,
-  updateFixtureStatus
+  updateFixtureStatus,
+  getFixturesByStatus
 } from '../models/sqlQueries';
 import response from '../helpers/resHelp';
 
@@ -101,17 +102,33 @@ class fixtureController {
     }
   }
 
-
   /**
-   * @static
-   * @param {object} req - request object
-   * @param {object} res - response object
-   * @return {object} A JSON Response object
-   * @memberof fixtureController
-   */
+    * @static
+    * @param {object} req - request object
+    * @param {object} res - response object
+    * @return {object} A JSON Response object
+    * @memberof fixtureController
+    */
   static async readFixtures(req, res) {
     try {
-      const { id } = req.params;
+
+      const { status } = req.query;
+      if (status) {
+        console.log("TCL: readFixtures -> status", status)
+        const { rows } = await query(getFixturesByStatus, [status]);
+        if (!rows[0]) return response(res, 404, 'failures', `No ${status} fixture`);
+
+        returnedFixture = await Promise.all(rows.map(async row => {
+          const homeTeam = await query(getTeamName, [row.hometeam]);
+          const awayTeam = await query(getTeamName, [row.awayteam]);
+
+          return { ...row, hometeam: homeTeam.rows[0].name, awayteam: awayTeam.rows[0].name };
+
+        }));
+
+        return response(res, 200, 'success', ` ${status} fixtures retrieved successfully`, '', returnedFixture);
+
+      }
       let returnedFixture = {};
       const { rows } = await query(findAllFixtures);
       if (!rows[0]) return response(res, 404, 'failures', 'Fixture not found');
@@ -203,7 +220,6 @@ class fixtureController {
       const { id } = req.params;
       const foundFixture = await query(findFixtureById, [id]);
       if (!foundFixture.rows[0]) return response(res, 404, 'failures', 'Fixture not found');
-      // console.log("TCL: toggleFixtureStatus -> foundFixture.rows[0]", foundFixture.rows[0])
       console.log("TCL: toggleFixtureStatus -> foundFixture.rows[0].status", foundFixture.rows[0].status)
       const newStatus = foundFixture.rows[0].status === 'pending' ? 'completed' : 'pending'
       const completeFixture = await query(updateFixtureStatus, [id, newStatus])

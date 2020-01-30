@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon --exec babel-node ./index.js --env",
     "build": "rimraf build/* && babel ./ -d build --ignore 'node_modules','coverage' ",
-    "start": "node build/index.js",
+    "start": "babel-node ./index.js --env",
     "test": "jest --detectOpenHandles --forceExit -u --coverage ",
     "test:watch": "jest -u --coverage --watch",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
@@ -16,6 +16,9 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ebzeal/mock-PL.git"
+  },
+  "engines": {
+    "node": "10.x"
   },
   "keywords": [],
   "author": "Olusola Ajayi <ebenezerajayi@gmail.com>",

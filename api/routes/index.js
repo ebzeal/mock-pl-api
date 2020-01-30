@@ -4,6 +4,7 @@ import authController from '../controllers/authController';
 import userController from '../controllers/userController';
 import teamController from '../controllers/teamController';
 import fixtureController from '../controllers/fixtureController';
+import searchController from '../controllers/searchController';
 
 import { signUpSchema, logInSchema } from '../middlewares/validations/authValidations';
 import handleValidationErrors from '../middlewares/validations/handleValidationErrors';
@@ -76,5 +77,9 @@ route.put(
   accessMiddleware.adminAccess,
   fixtureController.toggleFixtureStatus,
 );
+
+
+route.get('/search/teams', searchController.searchTeam);
+route.get('/search/fixtures', searchController.searchFixture);
 
 export default route;
