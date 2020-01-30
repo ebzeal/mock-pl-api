@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS
         playerPosition VARCHAR(128),
         playerNumber INTEGER,
         team_id INTEGER REFERENCES teams(id) ON DELETE CASCADE,
+        uniqueId UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
         dateCreated DATE NOT NULL DEFAULT CURRENT_DATE,
         dateModified DATE NOT NULL DEFAULT CURRENT_DATE
       );
