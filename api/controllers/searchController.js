@@ -1,3 +1,4 @@
+import redis from 'redis';
 import query from '../config/dbConnection';
 import {
   getSearchTeam,
@@ -7,6 +8,10 @@ import {
 } from '../models/sqlQueries';
 import response from '../helpers/resHelp';
 
+
+const portRedis = process.env.PORT || 6379;
+
+const redisClient = redis.createClient(portRedis);
 
 /**
  * @class searchController
@@ -28,6 +33,9 @@ class searchController {
       const searchPlayers = await query(getSearchPlayers, [keyword]);
 
       const searchResult = { Teams: [searchTeams.rows], Players: [searchPlayers.rows] };
+
+      redisClient.setex(keyword, 3600, JSON.stringify(searchResult));
+
       return (searchTeams.rowCount > 0 || searchPlayers.rowCount > 0)
         ? response(res, 201, 'success', `All teams with the keyword '${keyword}' `, '', searchResult)
         : response(res, 404, 'failure', 'No Search found', '');
@@ -52,6 +60,9 @@ class searchController {
       const searchOfficials = await query(getSearchOfficials, [keyword]);
 
       const searchResult = { Fixtures: [searchFixture.rows], Officials: [searchOfficials.rows] };
+
+      redisClient.setex(keyword, 3600, JSON.stringify(searchResult));
+
       return (searchFixture.rowCount > 0 || searchOfficials.rowCount > 0)
         ? response(res, 201, 'success', `All fixtures with the keyword '${keyword}' `, '', searchResult)
         : response(res, 404, 'failure', 'No Search found', '');

@@ -19,7 +19,7 @@ describe('Guests can search teams and fixture, POST/', () => {
         expect(message).toEqual(expect.stringContaining('All teams with the keyword '))
     });
 
-    it('should create new Team', async () => {
+    it('should search Fixtures', async () => {
         const response = await request
             .get('/api/v1/search/fixtures?keyword=pun')
         const { status, data: { statusCode, message } } = response.body;

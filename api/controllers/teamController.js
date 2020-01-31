@@ -1,3 +1,4 @@
+import redis from 'redis';
 import { uuid } from 'uuidv4';
 import query from '../config/dbConnection';
 import {
@@ -12,6 +13,10 @@ import {
   deleteTeam,
 } from '../models/sqlQueries';
 import response from '../helpers/resHelp';
+
+const portRedis = process.env.PORT || 6379;
+
+const redisClient = redis.createClient(portRedis);
 
 /**
  * @class teamController
@@ -81,6 +86,9 @@ class teamController {
           number: playernumber,
         }
       ));
+
+      redisClient.setex(id, 3600, JSON.stringify(foundTeam));
+
       return foundTeam
         ? response(res, 200, 'success', 'Team retrieved successfully', '', foundTeam)
         : response(res, 404, 'failure', 'Team not found');
@@ -103,6 +111,9 @@ class teamController {
         response(res, 404, 'failure', 'No teams found');
       }
       const foundTeam = rows;
+
+      redisClient.setex('', 3600, JSON.stringify(foundTeam));
+
       return foundTeam
         ? response(res, 200, 'success', 'Team retrieved successfully', '', foundTeam)
         : response(res, 404, 'failure', 'Team not found');

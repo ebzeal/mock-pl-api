@@ -1,4 +1,6 @@
 import { uuid } from 'uuidv4';
+import redis from 'redis';
+
 import query from '../config/dbConnection';
 import {
   findFixture,
@@ -19,6 +21,10 @@ import {
 } from '../models/sqlQueries';
 import response from '../helpers/resHelp';
 
+
+const portRedis = process.env.PORT || 6379;
+
+const redisClient = redis.createClient(portRedis);
 
 /**
  * @class fixtureController
@@ -96,6 +102,9 @@ class fixtureController {
       })
 
       returnedFixture = { ...rows[0], hometeam: homeTeam.rows[0].name, awayteam: awayTeam.rows[0].name, matchOfficials };
+
+      redisClient.setex(id, 3600, JSON.stringify(returnedFixture));
+
       return response(res, 200, 'success', 'Fixture retrieved successfully', '', returnedFixture);
     } catch (err) {
       return response(res, 500, 'failure', '', err.message);
@@ -125,6 +134,8 @@ class fixtureController {
 
         }));
 
+        redisClient.setex(status, 3600, JSON.stringify(returnedFixture));
+
         return response(res, 200, 'success', ` ${status} fixtures retrieved successfully`, '', returnedFixture);
 
       }
@@ -139,6 +150,8 @@ class fixtureController {
         return { ...row, hometeam: homeTeam.rows[0].name, awayteam: awayTeam.rows[0].name };
 
       }));
+
+      redisClient.setex('', 3600, JSON.stringify(returnedFixture));
 
       return response(res, 200, 'success', 'Fixture retrieved successfully', '', returnedFixture);
 
