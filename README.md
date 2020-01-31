@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.com/ebzeal/mock-pl-api.svg?branch=master)](https://travis-ci.com/ebzeal/mock-pl-api)
-[![Maintainability](https://api.codeclimate.com/v1/badges/a5ef9fd32344027b34f4/maintainability)](https://codeclimate.com/github/ebzeal/mock-pl-api/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/a5ef9fd32344027b34f4/test_coverage)](https://codeclimate.com/github/ebzeal/mock-pl-api/test_coverage)
+[![](https://img.shields.io/badge/Protected_by-Hound-a873d1.svg)](https://houndci.com)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://ebzeal.me)
 
 # mock-PL-backend
 
