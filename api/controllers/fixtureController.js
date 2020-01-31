@@ -114,7 +114,6 @@ class fixtureController {
 
       const { status } = req.query;
       if (status) {
-        console.log("TCL: readFixtures -> status", status)
         const { rows } = await query(getFixturesByStatus, [status]);
         if (!rows[0]) return response(res, 404, 'failures', `No ${status} fixture`);
 
@@ -220,7 +219,6 @@ class fixtureController {
       const { id } = req.params;
       const foundFixture = await query(findFixtureById, [id]);
       if (!foundFixture.rows[0]) return response(res, 404, 'failures', 'Fixture not found');
-      console.log("TCL: toggleFixtureStatus -> foundFixture.rows[0].status", foundFixture.rows[0].status)
       const newStatus = foundFixture.rows[0].status === 'pending' ? 'completed' : 'pending'
       const completeFixture = await query(updateFixtureStatus, [id, newStatus])
       if (completeFixture.rowCount > 0) return response(res, 205, 'success', `Fixture is ${newStatus}`);

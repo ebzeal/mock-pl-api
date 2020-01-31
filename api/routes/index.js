@@ -24,7 +24,7 @@ route.post('/auth/login', logInSchema, handleValidationErrors, authController.lo
 
 route.get('/user/:id', accessMiddleware.authoriseUser, accessMiddleware.adminAccess, userController.getUser);
 route.get('/users', accessMiddleware.authoriseUser, accessMiddleware.adminAccess, userController.getUsers);
-route.put('/user/:id', accessMiddleware.authoriseUser, accessMiddleware.adminAccess, userController.makeAdmin);
+route.put('/user/:id', accessMiddleware.authoriseUser, accessMiddleware.adminAccess, userController.toggleUserAccess);
 
 route.post(
   '/team',

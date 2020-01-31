@@ -53,7 +53,7 @@ class searchController {
 
       const searchResult = { Fixtures: [searchFixture.rows], Officials: [searchOfficials.rows] };
       return (searchFixture.rowCount > 0 || searchOfficials.rowCount > 0)
-        ? response(res, 201, 'success', `All teams with the keyword '${keyword}' `, '', searchResult)
+        ? response(res, 201, 'success', `All fixtures with the keyword '${keyword}' `, '', searchResult)
         : response(res, 404, 'failure', 'No Search found', '');
     } catch (err) {
       return response(res, 500, 'failure', '', err.message);

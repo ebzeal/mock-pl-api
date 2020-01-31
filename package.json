@@ -7,11 +7,11 @@
     "dev": "nodemon --exec babel-node ./index.js --env",
     "build": "rimraf build/* && babel ./ -d build --ignore 'node_modules','coverage' ",
     "start": "babel-node ./index.js --env",
-    "test": "jest --detectOpenHandles --forceExit -u --coverage ",
-    "test:watch": "jest -u --coverage --watch",
+    "test": "NODE_ENV=test jest --detectOpenHandles --forceExit -u --coverage ",
+    "test:watch": "NODE_ENV=test jest -u --coverage --watch",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "db-config": "./api/models/configure.sh",
-    "postdeploy": "psql -U postgres -f api/models/test-db.sql"
+    "test-db-config": "./api/models/configureTest.sh"
   },
   "repository": {
     "type": "git",
@@ -55,7 +55,8 @@
     "jest": "^24.9.0",
     "nodemon": "^1.19.3",
     "nyc": "^15.0.0",
-    "prettier-eslint-cli": "^5.0.0"
+    "prettier-eslint-cli": "^5.0.0",
+    "supertest": "^4.0.2"
   },
   "nyc": {
     "require": [

@@ -8,7 +8,7 @@ returning *`;
 const findUser = 'SELECT * FROM users WHERE email=$1 OR userName=$1';
 const findUsers = 'SELECT * FROM users';
 const findUserById = 'SELECT * FROM users WHERE id=$1';
-const updateUser = "UPDATE users SET access = 'Admin' WHERE id=$1";
+const updateUser = 'UPDATE users SET access =$2 WHERE id=$1';
 
 const findTeam = 'SELECT * FROM teams WHERE name=$1';
 const addTeam = 'INSERT INTO teams(name, location, coach)VALUES($1, $2, $3)';

@@ -41,7 +41,7 @@ class userController {
       const { rows } = await query(findUsers);
       let foundUsers = rows;
 
-      foundUsers = foundUsers.map(foundUser => {
+      foundUsers = foundUsers.map((foundUser) => {
         delete foundUser.password;
         return foundUser;
       });
@@ -61,17 +61,18 @@ class userController {
    * @returns {object} Json response
    * @memberof Auth
    */
-  static async makeAdmin(req, res) {
+  static async toggleUserAccess(req, res) {
     try {
       const { id } = req.params;
       const { rows } = await query(findUserById, [id]);
       const foundUser = rows[0];
       if (!foundUser) return response(res, 404, 'failures', 'User not found');
 
-      const result = await query(updateUser, [id]);
+      const newStatus = foundUser.access === 'User' ? 'Admin' : 'User';
+      const result = await query(updateUser, [id, newStatus]);
       const grantAdminAccess = result.rowCount;
 
-      if (grantAdminAccess) return response(res, 205, 'success', 'User is now an Admin');
+      if (grantAdminAccess) return response(res, 205, 'success', `User is now an ${newStatus}`);
     } catch (err) {
       return response(res, 500, 'failure', '', err.message);
     }
