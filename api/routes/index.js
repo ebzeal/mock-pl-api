@@ -13,6 +13,18 @@ import fixtureSchema from '../middlewares/validations/fixtureValidations';
 
 import accessMiddleware from '../middlewares/accessMiddleware';
 
+import {
+  cachedSearchTeams,
+  cachedSearchFixtures,
+  cachedReadFixture,
+  cachedReadFixtures,
+  cachedReadTeam,
+  cachedReadTeams,
+  cachedReadUser,
+  cachedReadUsers,
+} from '../middlewares/cache/cachedData';
+
+
 const route = Router();
 
 route.get('/', (req, res) => {
@@ -22,8 +34,8 @@ route.get('/', (req, res) => {
 route.post('/auth/signup', signUpSchema, handleValidationErrors, authController.signUp);
 route.post('/auth/login', logInSchema, handleValidationErrors, authController.logIn);
 
-route.get('/user/:id', accessMiddleware.authoriseUser, accessMiddleware.adminAccess, userController.getUser);
-route.get('/users', accessMiddleware.authoriseUser, accessMiddleware.adminAccess, userController.getUsers);
+route.get('/user/:id', accessMiddleware.authoriseUser, accessMiddleware.adminAccess, cachedReadUser, userController.getUser);
+route.get('/users', accessMiddleware.authoriseUser, accessMiddleware.adminAccess, cachedReadUsers, userController.getUsers);
 route.put('/user/:id', accessMiddleware.authoriseUser, accessMiddleware.adminAccess, userController.toggleUserAccess);
 
 route.post(
@@ -34,8 +46,8 @@ route.post(
   handleValidationErrors,
   teamController.addTeam,
 );
-route.get('/teams', accessMiddleware.authoriseUser, teamController.readTeams);
-route.get('/team/:id', accessMiddleware.authoriseUser, teamController.readTeam);
+route.get('/teams', accessMiddleware.authoriseUser, cachedReadTeams, teamController.readTeams);
+route.get('/team/:id', accessMiddleware.authoriseUser, cachedReadTeam, teamController.readTeam);
 route.put(
   '/team/:id',
   accessMiddleware.authoriseUser,
@@ -55,8 +67,8 @@ route.post(
   handleValidationErrors,
   fixtureController.createFixture,
 );
-route.get('/fixtures', accessMiddleware.authoriseUser, fixtureController.readFixtures);
-route.get('/fixture/:id', accessMiddleware.authoriseUser, fixtureController.readFixture);
+route.get('/fixtures', accessMiddleware.authoriseUser, cachedReadFixtures, fixtureController.readFixtures);
+route.get('/fixture/:id', accessMiddleware.authoriseUser, cachedReadFixture, fixtureController.readFixture);
 route.put(
   '/fixture/:id',
   accessMiddleware.authoriseUser,
@@ -79,7 +91,7 @@ route.put(
 );
 
 
-route.get('/search/teams', searchController.searchTeam);
-route.get('/search/fixtures', searchController.searchFixture);
+route.get('/search/teams', cachedSearchTeams, searchController.searchTeam);
+route.get('/search/fixtures', cachedSearchFixtures, searchController.searchFixture);
 
 export default route;

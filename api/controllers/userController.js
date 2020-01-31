@@ -1,7 +1,13 @@
 /* eslint-disable max-len */
+import redis from 'redis';
 import query from '../config/dbConnection';
 import response from '../helpers/resHelp';
 import { findUserById, findUsers, updateUser } from '../models/sqlQueries';
+
+
+const portRedis = process.env.PORT || 6379;
+
+const redisClient = redis.createClient(portRedis);
 
 /**
  * @class userController
@@ -20,6 +26,8 @@ class userController {
       const { rows } = await query(findUserById, [id]);
       const foundUser = rows[0];
       delete foundUser.password;
+
+      redisClient.setex(id, 3600, JSON.stringify(foundUser));
 
       return foundUser
         ? response(res, 201, 'success', 'User found', '', foundUser)
@@ -45,6 +53,8 @@ class userController {
         delete foundUser.password;
         return foundUser;
       });
+
+      redisClient.setex('', 3600, JSON.stringify(foundUsers));
 
       return foundUsers
         ? response(res, 201, 'success', 'User found', '', foundUsers)
