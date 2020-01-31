@@ -5,12 +5,14 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --exec babel-node ./index.js --env",
-    "build": "rimraf build/* && babel ./ -d build --ignore 'node_modules','coverage' ",
+    "clear": "rm -rf build",
+    "build": "npm run clear && babel index.js --out-dir build",
     "start": "babel-node ./index.js --env",
     "test": "NODE_ENV=test jest --detectOpenHandles --forceExit -u --coverage ",
     "test:watch": "NODE_ENV=test jest -u --coverage --watch",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "db-config": "./api/models/configure.sh",
+    "tables-setup-heroku": "heroku pg:psql -f ./api/models/dbMigrationAndSeeder.sql",
     "test-db-config": "./api/models/configureTest.sh"
   },
   "repository": {
@@ -18,7 +20,8 @@
     "url": "git+https://github.com/ebzeal/mock-PL.git"
   },
   "engines": {
-    "node": "10.x"
+    "node": "10.16.3",
+    "npm": "6.9.0"
   },
   "keywords": [],
   "author": "Olusola Ajayi <ebenezerajayi@gmail.com>",
@@ -28,20 +31,8 @@
   },
   "homepage": "https://github.com/ebzeal/mock-PL#readme",
   "dependencies": {
-    "@babel/runtime": "^7.6.3",
-    "bcryptjs": "^2.4.3",
-    "cors": "^2.8.5",
-    "coveralls": "^3.0.6",
-    "dotenv": "^8.1.0",
-    "express": "^4.17.1",
-    "express-validator": "^6.2.0",
-    "jsonwebtoken": "^8.5.1",
-    "pg": "^7.17.1",
-    "redis": "^2.8.0",
-    "uuidv4": "^6.0.2"
-  },
-  "devDependencies": {
     "@babel/cli": "^7.6.3",
+    "@babel/runtime": "^7.6.3",
     "@babel/core": "^7.6.3",
     "@babel/node": "^7.6.3",
     "@babel/plugin-transform-runtime": "^7.6.2",
@@ -49,6 +40,19 @@
     "@babel/register": "^7.6.2",
     "babel-core": "^7.0.0-bridge.0",
     "babel-loader": "^8.0.6",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "coveralls": "^3.0.6",
+    "dotenv": "^8.1.0",
+    "express": "^4.17.1",
+    "express-rate-limit": "^5.0.0",
+    "express-validator": "^6.2.0",
+    "jsonwebtoken": "^8.5.1",
+    "pg": "^7.17.1",
+    "redis": "^2.8.0",
+    "uuidv4": "^6.0.2"
+  },
+  "devDependencies": {
     "eslint": "^6.5.1",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",

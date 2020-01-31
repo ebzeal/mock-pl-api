@@ -5,7 +5,7 @@ import response from '../helpers/resHelp';
 import { findUserById, findUsers, updateUser } from '../models/sqlQueries';
 
 
-const portRedis = process.env.PORT || 6379;
+const portRedis = process.env.REDIS_URL || 6379;
 
 const redisClient = redis.createClient(portRedis);
 

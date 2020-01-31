@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS users, teams, players, fixtures, matchOfficials;
+CREATE EXTENSION "uuid-ossp";
 
    CREATE TABLE IF NOT EXISTS
         users(

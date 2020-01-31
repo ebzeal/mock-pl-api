@@ -7,7 +7,7 @@ import env from 'dotenv';
 env.config();
 
 const connectionEnv = () =>
-  process.env.NODE_ENV === 'test' ? process.env.DATABASE_URL_TEST : process.env.DATABASE_URL_DEV;
+  process.env.NODE_ENV === 'test' ? process.env.DATABASE_URL_TEST : process.env.DATABASE_URL;
 
 const pool = new Pool({
   connectionString: connectionEnv(),
