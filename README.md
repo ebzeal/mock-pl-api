@@ -1,6 +1,4 @@
-[![Build Status](https://travis-ci.com/ebzeal/mock-pl-api.svg?branch=master)](https://travis-ci.com/ebzeal/mock-pl-api)
-[![Maintainability](https://api.codeclimate.com/v1/badges/a5ef9fd32344027b34f4/maintainability)](https://codeclimate.com/github/ebzeal/mock-pl-api/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/a5ef9fd32344027b34f4/test_coverage)](https://codeclimate.com/github/ebzeal/mock-pl-api/test_coverage)
+
 
 # mock-PL-backend
 
