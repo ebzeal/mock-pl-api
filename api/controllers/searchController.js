@@ -9,9 +9,10 @@ import {
 import response from '../helpers/resHelp';
 
 
-const portRedis = process.env.PORT || 6379;
+const portRedis = process.env.REDIS_URI || 6379;
 
-const redisClient = redis.createClient(portRedis);
+const redisClient = redis.createClient({ host: 'redis', port: portRedis });
+// const redisClient = redis.createClient(portRedis);
 
 /**
  * @class searchController
